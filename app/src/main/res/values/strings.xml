@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="password">password</string>
+    <string name="unustatud">Unustasid parooli?</string>
+    <string name="registreeri">registreeri</string>
+    <string name="email">Email</string>
+    <string name="login">login</string>
+    <string name="katsed">katsed</string>
+</resources>

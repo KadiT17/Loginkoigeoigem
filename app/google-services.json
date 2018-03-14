@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "564098336745",
+    "firebase_url": "https://login-deff1.firebaseio.com",
+    "project_id": "login-deff1",
+    "storage_bucket": "login-deff1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564098336745:android:5a95b64dd3689577",
+        "android_client_info": {
+          "package_name": "com.example.opilane.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564098336745-68s9vohld99irlq4g8vvnfqhoq6t8pef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.opilane.login",
+            "certificate_hash": "0129932e7aff10a6b969df493e69fdc790641035"
+          }
+        },
+        {
+          "client_id": "564098336745-vj53iojgkscf5q5f81582q6d04340mmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9WxJeCMze_P84x8qGe-34Pz76N3JXesU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564098336745-vj53iojgkscf5q5f81582q6d04340mmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
