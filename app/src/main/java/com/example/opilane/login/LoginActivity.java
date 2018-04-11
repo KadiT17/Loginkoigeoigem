@@ -67,28 +67,28 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void valideeri(String epost, String salasõna){
+    private void valideeri(String epost, String salasõna) {
         progressDialog.setMessage("Andmete edastamiseha lähesb aega, palun kannatust!");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(epost, salasõna).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     kontrolliEposti();
-                }
-                else{
+                } else {
                     teade("Sisse logimine ebaõnnestus!");
-                    if (loendaja < 3){
+                    if (loendaja < 3) {
                         katsed.setText("Katseid on jäänud veel" + String.valueOf(loendaja));
                     }
-                    if (loendaja ==0){
+                    if (loendaja == 0) {
                         btn_login.setEnabled(false);
                         katsed.setText("Võta ühendust administraatoriga");
                     }
                 }
             }
         });
+    }
         private void kontrolliEposti(){
             FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
             boolean epostiKontroll = firebaseUser.isEmailVerified();

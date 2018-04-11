@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         eesNimi = findViewById(R.id.eesnimi);
         perekonnaNimi = findViewById(R.id.perenimi);
-        epost = findViewById(R.id. epost);
+        epost = findViewById(R.id.epost);
         salasõna = findViewById(R.id.parool);
         btn_registreeri = findViewById(R.id.btnRegistreeri);
         progressDialog = new ProgressDialog(this);
@@ -41,28 +42,29 @@ public class RegisterActivity extends AppCompatActivity {
         btn_registreeri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (valideri()){
-                String k_epost = epost.getText(). toString() .trim();
-                String k_salasõna = salasõna.getText() .toString() .trim();
-                firebaseAuth.createUserWithEmailAndPassword(k_epost, k_salasõna).
-                        addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()){
-                                    progressDialog.setMessage("Andmete edastamisega läheb aega, palun kannatust");
-                                    progressDialog.show();
-                                    saadaEpostiKinnitus();
+                if (valideri()) {
+                    String k_epost = epost.getText().toString().trim();
+                    String k_salasõna = salasõna.getText().toString().trim();
+                    firebaseAuth.createUserWithEmailAndPassword(k_epost, k_salasõna).
+                            addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        progressDialog.setMessage("Andmete edastamisega läheb aega, palun kannatust");
+                                        progressDialog.show();
+                                        saadaEpostiKinnitus();
+                                    } else {
+                                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                        }
+                                    }
                                 }
-                                else {
-                                    if (task.getException()instanceof FirebaseAuthUserCollisionException){}
-                                }
-                            }
-                        });
+                            });
                 }
             }
 
         });
     }
+
     private boolean valideri() {
         boolean tulemus = false;
         _eesNimi = eesNimi.getText().toString();
@@ -75,31 +77,38 @@ public class RegisterActivity extends AppCompatActivity {
             tulemus = true;
         }
         return tulemus;
-        }
-        private void saadaEpostiKinnitus(){
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            if (firebaseUser != null){
-                firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                         saadaKasutajaAndmed();
-                            teade("Registreerimine õnnestus, teile saadeti kinnitus email!");
-                            finish();
-                            firebaseAuth.signOut(); //logid välja, et saaksid valideerida ennast ning uuesti sisse logida siis
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        } else {
-                            teade("Kinnitus emaili ei saadetud!");
-                        }
+    }
 
+    private void saadaEpostiKinnitus() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        saadaKasutajaAndmed();
+                        teade("Registreerimine õnnestus, teile saadeti kinnitus email!");
+                        finish();
+                        firebaseAuth.signOut(); //logid välja, et saaksid valideerida ennast ning uuesti sisse logida siis
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    } else {
+                        teade("Kinnitus emaili ei saadetud!");
                     }
-                });
-            }
+
+                }
+            });
+        }
 
     }
+
     private void saadaKasutajaAndmed() {
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
-            UserProfileData userProfileData = new UserProfileData(_eesNimi, _perekonnaNimi,_epost);
-            databaseReference.setValue(userProfileData);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        UserProfileData userProfileData = new UserProfileData(_eesNimi, _perekonnaNimi, _epost);
+        databaseReference.setValue(userProfileData);
+    }
+
+    public void teade(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
