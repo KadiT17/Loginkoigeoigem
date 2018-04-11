@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void valideeri(String epost, String salasõna){
-        progressDialog.setMessage("Andmete edastamiseha läheb aega, palun kannatust!");
+        progressDialog.setMessage("Andmete edastamiseha lähesb aega, palun kannatust!");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(epost, salasõna).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
